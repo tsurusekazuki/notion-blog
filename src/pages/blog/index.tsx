@@ -47,7 +47,7 @@ export async function getStaticProps({ preview }) {
   }
 }
 
-export default ({ posts = [], preview }) => {
+export default ({ posts, preview }) => {
   return (
     <>
       <Header titlePre="Blog" />
@@ -68,23 +68,29 @@ export default ({ posts = [], preview }) => {
           <p className={blogStyles.noPosts}>There are no posts yet</p>
         )}
         {posts.map(post => {
+          const slug: string = post.Slug
+          const published: string = post.Published
+          const blogTitle: string = post.Page
+          const author: string = post.Authors[0]
+          const [year, month, day]: string[] = getDateStr(post.Date).split('/')
+
           return (
-            <div className={blogStyles.postPreview} key={post.Slug}>
+            <div className={blogStyles.postPreview} key={slug}>
               <h3>
                 <Link href="/blog/[slug]" as={getBlogLink(post.Slug)}>
                   <div className={blogStyles.titleContainer}>
-                    {!post.Published && (
+                    {!published && (
                       <span className={blogStyles.draftBadge}>Draft</span>
                     )}
-                    <a>{post.Page}</a>
+                    <a>{blogTitle}</a>
                   </div>
                 </Link>
               </h3>
-              {post.Authors.length > 0 && (
-                <div className="authors">By: {post.Authors.join(' ')}</div>
-              )}
+              {author.length > 0 && <div className="authors">By: {author}</div>}
               {post.Date && (
-                <div className="posted">Posted: {getDateStr(post.Date)}</div>
+                <div className="posted">
+                  Posted: {year}年{month}月{day}日
+                </div>
               )}
               <p>
                 {(!post.preview || post.preview.length === 0) &&
