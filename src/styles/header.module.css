@@ -13,7 +13,10 @@
 
 .header ul li {
   display: inline-block;
-  padding: 0 10px;
+  padding: 30px 30px;
+  border-radius: 96px;
+  background: #53f3cb;
+  box-shadow: 40px 40px 82px #32927a, -40px -40px 82px #74ffff;
 }
 
 .header :global(a) {
@@ -28,6 +31,6 @@
 
 @media (max-width: 600px) {
   .header {
-    padding: .5em 0 2em;
+    padding: 0.5em 0 2em;
   }
 }
