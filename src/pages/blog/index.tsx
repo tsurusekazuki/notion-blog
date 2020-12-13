@@ -48,6 +48,7 @@ export async function getStaticProps({ preview }) {
 }
 
 export default ({ posts, preview }) => {
+  const sortPosts = posts.sort((a, b) => b.Date - a.Date)
   return (
     <>
       <Header titlePre="Blog" />
@@ -67,7 +68,7 @@ export default ({ posts, preview }) => {
         {posts.length === 0 && (
           <p className={blogStyles.noPosts}>There are no posts yet</p>
         )}
-        {posts.map(post => {
+        {sortPosts.map(post => {
           const slug: string = post.Slug
           const published: string = post.Published
           const blogTitle: string = post.Page
