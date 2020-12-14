@@ -140,3 +140,24 @@
 .post :global(a + p) {
   margin-top: 0;
 }
+
+.tagsTitle {
+  max-width: 600px;
+  margin: 1em auto 5px auto;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto 2em auto;
+  background-color: #eeeeee;
+  border-radius: 8px;
+}
+
+.tag {
+  margin: 5px;
+  cursor: pointer;
+  text-decoration: underline;
+}

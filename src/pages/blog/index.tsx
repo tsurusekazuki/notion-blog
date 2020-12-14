@@ -7,6 +7,7 @@ import sharedStyles from '../../styles/shared.module.css'
 import {
   getBlogLink,
   getDateStr,
+  getTagLink,
   postIsPublished,
 } from '../../lib/blog-helpers'
 import { textBlock } from '../../lib/notion/renderers'
@@ -17,6 +18,7 @@ export async function getStaticProps({ preview }) {
   const postsTable = await getBlogIndex()
 
   const authorsToGet: Set<string> = new Set()
+  let allTags: string[] = []
   const posts: any[] = Object.keys(postsTable)
     .map(slug => {
       const post = postsTable[slug]
@@ -31,7 +33,7 @@ export async function getStaticProps({ preview }) {
       return post
     })
     .filter(Boolean)
-
+  allTags = allTags.filter((tag, index, orig) => orig.indexOf(tag) === index)
   const { users } = await getNotionUsers([...authorsToGet])
 
   posts.map(post => {
@@ -42,12 +44,13 @@ export async function getStaticProps({ preview }) {
     props: {
       preview: preview || false,
       posts,
+      allTags,
     },
     unstable_revalidate: 10,
   }
 }
 
-export default ({ posts, preview }) => {
+export default ({ posts, preview, allTags }) => {
   const sortPosts = posts.sort((a, b) => b.Date - a.Date)
   return (
     <>
@@ -65,14 +68,29 @@ export default ({ posts, preview }) => {
       )}
       <div className={`${sharedStyles.layout} ${blogStyles.blogIndex}`}>
         <h1>Tech Blog</h1>
-        {posts.length === 0 && (
+        {posts.length === 0 && allTags.length > 0 && (
           <p className={blogStyles.noPosts}>There are no posts yet</p>
+        )}
+        {posts.length > 0 && allTags.length > 0 && (
+          <>
+            <div className={blogStyles.tagsTitle}>Tags:</div>
+            <div className={blogStyles.tags}>
+              {allTags &&
+                allTags.length > 0 &&
+                allTags.map(tag => (
+                  <Link href="/blog/tag/[tag]" as={getTagLink(tag)}>
+                    <span className={blogStyles.tag}>{tag}</span>
+                  </Link>
+                ))}
+            </div>
+          </>
         )}
         {sortPosts.map(post => {
           const slug: string = post.Slug
           const published: string = post.Published
           const blogTitle: string = post.Page
           const author: string = post.Authors[0]
+          const tags: string[] = post.Tags
           const [year, month, day]: string[] = getDateStr(post.Date).split('/')
 
           return (
@@ -87,6 +105,13 @@ export default ({ posts, preview }) => {
                   </div>
                 </Link>
               </h3>
+              {tags &&
+                tags.length > 0 &&
+                tags.map(tag => (
+                  <Link href="/blog/tag/[tag]" as={getTagLink(tag)}>
+                    <span className={blogStyles.tag}>{tag}</span>
+                  </Link>
+                ))}
               {author.length > 0 && <div className="authors">By: {author}</div>}
               {post.Date && (
                 <div className="posted">
