@@ -27,7 +27,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: none;
+  /*border: none;*/
   background-color: black;
   border: 1px solid black;
   color: white;
@@ -63,9 +63,13 @@
 }
 
 .postPreview {
-  max-width: 600px;
-  margin: 10px auto;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 5px 10px;
+  /*border-bottom: 1px solid rgba(0, 0, 0, 0.8);*/
+  border-radius: 50px;
+  background: #ebecf0;
+  box-shadow: 5px 5px 20px #c8c9cc, -5px -5px 20px #ffffff;
 }
 
 .postPreview:last-child {
