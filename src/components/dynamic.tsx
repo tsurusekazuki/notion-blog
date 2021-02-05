@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic'
 import ExtLink from './ext-link'
 
 export default {
-  // default tags
+  // default tag
   ol: 'ol',
   ul: 'ul',
   li: 'li',
